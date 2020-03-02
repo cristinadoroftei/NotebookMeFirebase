@@ -26,12 +26,7 @@ import java.util.Map;
 public class AddNote extends AppCompatActivity {
     Toolbar toolbar;
     EditText noteTitle, noteDetails;
-    Calendar c;
-    String todaysDate;
-    String currentTime;
     Note editingNote;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private final static String notes = "notes";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,18 +70,9 @@ public class AddNote extends AppCompatActivity {
 
             }
         });
-        // get current date and time
-        c = Calendar.getInstance();
-        todaysDate = c.get(Calendar.YEAR) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH);
-        currentTime = pad(c.get(Calendar.HOUR)) + ":" + pad(c.get(Calendar.MINUTE));
 
-        Log.d("calendar", "Date and Time:" + todaysDate + " and " + currentTime );
     }
-    private String pad(int i){
-        if (i<10)
-            return "0"+i;
-        return String.valueOf(i);
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -104,23 +90,11 @@ public class AddNote extends AppCompatActivity {
             if(editingNote!= null){
                 editingNote.setTitle(noteTitle.getText().toString());
                 editingNote.setContent(noteDetails.getText().toString());
-                DocumentReference docRef = db.collection(notes).document(editingNote.getID());
-                Map<String,String> map = new HashMap<>();
-                map.put("title", noteTitle.getText().toString());
-                map.put("content", noteDetails.getText().toString());
-                map.put("date", todaysDate);
-                map.put("time", currentTime);
-                docRef.set(map);
+                MemoryStorage.editNote(editingNote);
                 goToMain();
             }
             else {
-                DocumentReference docRef = db.collection(notes).document();
-                Map<String,String> map = new HashMap<>();
-                map.put("title", noteTitle.getText().toString());
-                map.put("content", noteDetails.getText().toString());
-                map.put("date", todaysDate);
-                map.put("time", currentTime);
-                docRef.set(map);
+                MemoryStorage.addNote(noteTitle.getText().toString(), noteDetails.getText().toString());
                 goToMain();
             }
         }

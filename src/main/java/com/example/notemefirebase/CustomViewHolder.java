@@ -1,5 +1,6 @@
 package com.example.notemefirebase;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,6 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
 
     public CustomViewHolder(@NonNull View itemView) {
         super(itemView);
-
         itemLayout = itemView.findViewById(R.id.parent_layout);
     }
 

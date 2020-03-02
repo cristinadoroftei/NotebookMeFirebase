@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.add){
             Intent i = new Intent(this, AddNote.class);
             startActivity(i);
-
             Toast.makeText(this,"Add btn is clicked",Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);

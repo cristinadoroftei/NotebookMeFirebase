@@ -1,6 +1,5 @@
 package com.example.notemefirebase;
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,13 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class Adapter extends RecyclerView.Adapter<Adapter.CustomViewHolder> {
 
-
-
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final static String notes = "notes";
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -63,6 +62,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CustomViewHolder> {
 
                     Log.d("BeforeIntent:", String.valueOf(MemoryStorage.notes.get(getAdapterPosition()).getID()));
                     v.getContext().startActivity(intent);
+                }
+            });
+            itemLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Log.i("all", "long click pressed");
+                    // delete:
+
+                   MemoryStorage.deleteNote(MemoryStorage.notes.get(getAdapterPosition()));
+                    return false;
                 }
             });
         }
